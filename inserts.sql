@@ -1,0 +1,161 @@
+-- INSERTS
+ 
+insert into atividade
+(id_atividade, nome)
+values
+(1,  'Bike indoor'),
+(2,  'Circo'),
+(3,  'Cross training'),
+(4,  'Dança'),
+(5,  'Funcional Beach'),
+(6,  'Ginástica'),
+(7,  'Hidroginástica'),
+(8,  'Jiu-Jitsu'),
+(9,  'MMA'),
+(10, 'Musculação'),
+(11, 'Natação'),
+(12, 'Natação Livre'),
+(13, 'Pilates'),
+(14, 'Tenis'),
+(15, 'Vida ativa'),
+(16, 'Yogolates');
+ 
+insert into instrutor
+(id_instrutor, nome, dt_nascimento)
+values
+(1, 'Amanda Silva', '2005-10-26'),
+(2, 'Bernardo Souza', '2006-10-26'),
+(3, 'Caio Martins', '2007-10-26'),
+(4, 'Daniele Martins', '2008-10-26'),
+(5, 'Elizabete Xavier', '2009-10-26'),
+(6, 'Fernando Santos', '2010-10-26'),
+(7, 'Henrique Amorin', '2011-10-26');
+ 
+insert into aluno
+(id_aluno, nome, telefone, dt_nascimento, rua)
+values
+(1, 'Gustavo Adriano', '11111111111', '1990-01-26', 'Rua 123'),
+(2, 'Lucas Araujo',    '22222222222', '1990-02-26', 'Rua 123'),
+(3, 'Larissa Santos',  '33333333333', '1990-03-26', 'Rua 123'),
+(4, 'Rafael Souza',    '44444444444', '1990-04-26', 'Rua 123'),
+(5, 'Pedro Henrique',  '55555555555', '1990-05-26', 'Rua 123'),
+(6, 'Fernando Pessoa', '66666666666', '1990-06-26', 'Rua 123'),
+(7, 'Felipe Gonçalves','77777777777', '1990-07-26', 'Rua 123'),
+(8, 'Julio Augusto',   '88888888888', '1980-08-26', 'Rua 123');
+ 
+insert into turma
+(id_turma, horario, duracao, dt_inicio, id_atividade, id_instrutor)
+values
+(1,  time '08:00', 60, current_date, 1, 6),
+(2,  time '09:00', 60, current_date, 1, 6),
+(3,  time '10:00', 60, current_date, 1, 6),
+(4,  time '11:00', 60, current_date, 1, 6),
+(5,  time '12:00', 60, current_date, 1, 6),
+(6,  time '13:00', 60, current_date, 1, 6),
+(7,  time '14:00', 60, current_date, 1, 6),
+(8,  time '15:00', 60, current_date, 1, 6),
+(9,  time '16:00', 60, current_date, 1, 6),
+(10, time '17:00', 60, current_date, 1, 6),
+(11, time '18:00', 60, current_date, 1, 6),
+(12, time '19:00', 60, current_date, 1, 6),
+(13, time '20:00', 60, current_date, 1, 6),
+(14, time '21:00', 60, current_date, 1, 6),
+(15, time '16:00', 60, current_date, 2, 4),
+(16, time '17:00', 60, current_date, 2, 4),
+(17, time '19:00', 60, current_date, 2, 4),
+(18, time '20:00', 60, current_date, 2, 4),
+(19, time '07:00', 60, current_date, 3, 2),
+(20, time '09:00', 60, current_date, 3, 2),
+(21, time '17:00', 60, current_date, 3, 2),
+(22, time '15:00', 60, current_date, 4, 4),
+(23, time '16:00', 60, current_date, 4, 4),
+(24, time '17:00', 60, current_date, 4, 4),
+(25, time '19:00', 60, current_date, 4, 4),
+(26, time '19:00', 60, current_date, 5, 1),
+(27, time '07:00', 60, current_date, 6, 1),
+(28, time '08:00', 60, current_date, 6, 1),
+(29, time '09:00', 60, current_date, 6, 1),
+(30, time '17:00', 60, current_date, 6, 1),
+(31, time '20:00', 60, current_date, 6, 1),
+(32, time '09:00', 60, current_date, 7, 3),
+(33, time '11:00', 60, current_date, 7, 3),
+(34, time '17:00', 60, current_date, 7, 3),
+(35, time '18:00', 60, current_date, 7, 3),
+(36, time '20:00', 60, current_date, 8, 3),
+(37, time '21:00', 60, current_date, 8, 3),
+(38, time '18:00', 60, current_date, 9, 2),
+(39, time '19:00', 60, current_date, 9, 2),
+(40, time '21:00', 60, current_date, 9, 2),
+(41, time '06:00', 60, current_date, 10, 2),
+(42, time '07:00', 60, current_date, 10, 2),
+(43, time '08:00', 60, current_date, 10, 2),
+(44, time '09:00', 60, current_date, 10, 2),
+(45, time '10:00', 60, current_date, 10, 2),
+(46, time '11:00', 60, current_date, 10, 2),
+(47, time '12:00', 60, current_date, 10, 2),
+(48, time '13:00', 60, current_date, 10, 2),
+(49, time '14:00', 60, current_date, 10, 2),
+(50, time '15:00', 60, current_date, 10, 2),
+(51, time '16:00', 60, current_date, 10, 2),
+(52, time '17:00', 60, current_date, 10, 2),
+(53, time '18:00', 60, current_date, 10, 2),
+(54, time '19:00', 60, current_date, 10, 2),
+(55, time '20:00', 60, current_date, 10, 2),
+(56, time '21:00', 60, current_date, 10, 2),
+(57, time '06:00', 60, current_date, 11, 1),
+(58, time '07:00', 60, current_date, 11, 1),
+(59, time '08:00', 60, current_date, 11, 1),
+(60, time '09:00', 60, current_date, 11, 1),
+(61, time '10:00', 60, current_date, 11, 1),
+(62, time '11:00', 60, current_date, 11, 1),
+(63, time '12:00', 60, current_date, 11, 1),
+(64, time '13:00', 60, current_date, 11, 1),
+(65, time '14:00', 60, current_date, 11, 1),
+(66, time '15:00', 60, current_date, 11, 1),
+(67, time '16:00', 60, current_date, 11, 1),
+(68, time '17:00', 60, current_date, 11, 1),
+(69, time '18:00', 60, current_date, 11, 1),
+(70, time '19:00', 60, current_date, 11, 1),
+(71, time '20:00', 60, current_date, 11, 1),
+(72, time '21:00', 60, current_date, 11, 1),
+(73, time '18:00', 60, current_date, 12, 1),
+(74, time '19:00', 60, current_date, 12, 1),
+(75, time '20:00', 60, current_date, 12, 1),
+(76, time '21:00', 60, current_date, 12, 1),
+(77, time '15:00', 60, current_date, 13, 4),
+(78, time '16:00', 60, current_date, 13, 4),
+(79, time '17:00', 60, current_date, 13, 4),
+(80, time '19:00', 60, current_date, 13, 4),
+(81, time '19:00', 60, current_date, 14, null),
+(82, time '21:00', 60, current_date, 14, null),
+(83, time '17:00', 60, current_date, 15, 7),
+(84, time '19:00', 60, current_date, 15, 7),
+(85, time '19:00', 60, current_date, 16, 7);
+ 
+insert into matricula
+(id_aluno, dt_matricula, id_turma)
+values
+(1, current_date, 41),
+(1, current_date, 1),
+(1, current_date, 26),
+(1, current_date, 15),
+(2, current_date, 41),
+(2, current_date, 26),
+(3, current_date, 15),
+(3, current_date, 19),
+(3, current_date, 27),
+(4, current_date, 28),
+(5, current_date, 29),
+(6, current_date, 30),
+(8, current_date, 41);
+ 
+insert into frequencia
+(id_frequencia, dt_frequencia, presente, id_aluno, id_turma)
+values
+(1, now(), true,  1, 1),
+(2, now(), true,  1, 41),
+(3, now(), false, 2, 41),
+(4, now(), true,  3, 19),
+(5, now(), true,  4, 28),
+(6, now(), true,  8, 41),
+(7, now(), true,  1, 26);
