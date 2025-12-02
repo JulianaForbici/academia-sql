@@ -7,6 +7,7 @@
 select count(*) as total_clientes from cliente; 
 
 -- 2 Quantos clientes estão cadastrados em cada plano?
+-- a ideia é agrupar por plano e contar quantos clientes ele tem
 -- usei o group by pq quero uma linha por plano com a contagem dos clientes
 select p.nome as plano, count(c.id_cliente) as quantidade_clientes
 from plano p 
@@ -20,7 +21,8 @@ select numero_bi, nome from musico order by numero_bi;
 select id_plano, nome, valor, limite_downloads from plano;
 
 -- 5 Quantos artistas tem cada gravadora?
--- LEFT JOIN para incluir gravadoras sem discos e o COUNT(DISTINCT) pra evitar infos duplicadas
+-- contamos quantos músicos (produtores) diferentes tem discos em cada gravadora
+-- left join para incluir gravadoras sem discos e o COUNT(DISTINCT) pra evitar infos duplicadas
 select g.nome as gravadora,
 count(distinct d.id_musico) as quantidade_artistas
 from gravadora g
@@ -28,7 +30,7 @@ left join disco d on d.id_gravadora = g.id_gravadora
 group by g.nome;
 
 -- 6  Qual gravadora tem mais artistas?
--- mesma lógica do exercicio anterior
+-- mesma lógica do exercicio anterior, mas ordenando por quantidade e pegando só a primeira
 select g.nome as gravadora,
 count(distinct d.id_musico) as quantidade_artistas
 from gravadora g
@@ -57,7 +59,7 @@ left join musica m on m.id_genero = g.id_genero
 group by g.nome;
 
 -- 10 Quantas músicas cada cliente baixou?
--- 
+-- Conta quantos downloads cada cliente fez
 select c.nome as cliente,
 count(d.id_download) as quantidade_download
 from cliente c
@@ -85,7 +87,7 @@ limit 1;
 -- junta download > musica > musico > disco > gravadora e conta downloads por (artista, gravadora)
 select m.nome as artista,
 g.nome as gravadora,
-count(d.id_download) as quantidade_download
+count(d.id_download) as quantidade_download -- número de downloads das músicas desse artista nessa gravadora
 from download d
 join cliente c on c.id_cliente = d.id_cliente
 join plano p on p.id_plano = c.id_plano
@@ -110,7 +112,7 @@ group by p.id_plano, p.nome, p.valor
 order by total_receber desc;
 
 -- 14 Qual o faturamento da minha empresa?
--- vai retornar a soma dos valores dos planos dos clientes  
+ -- soma de todos os valores de plano dos clientes  
 select sum(p.valor) as faturamento from cliente c 
 join plano p on p.id_plano = c.id_plano;
 
