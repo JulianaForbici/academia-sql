@@ -3,124 +3,124 @@
 -- Exercícios dos SELECTs
 
 
--- 1
-select count(*) as clientes from cliente;
+-- 1 Quantos clientes estão cadastrados?
+select count(*) as total_clientes from cliente; 
 
--- 2
-select p.nome as plano, count(c.id_cliente) as quantidade
-from plano p
+-- 2 Quantos clientes estão cadastrados em cada plano?
+-- a ideia é agrupar por plano e contar quantos clientes ele tem
+-- usei o group by pq quero uma linha por plano com a contagem dos clientes
+select p.nome as plano, count(c.id_cliente) as quantidade_clientes
+from plano p 
 left join cliente c on c.id_plano = p.id_plano
-group by p.id_plano, p.nome
-order by p.nome;
+group by p.id_plano, p.nome;
 
--- 3
-select a.id_artista, a.nome as artista, g.nome as gravadora
-from artista a
-left join gravadora g on a.id_gravadora = g.id_gravadora
-order by a.nome;
+-- 3 Quais os artistas que estão no sistema?
+select numero_bi, nome from musico order by numero_bi;
 
--- 4
-select id_plano, nome, mensalidade, limite_downloads
-from plano
-order by id_plano;
+-- 4 Quais são os planos, valores e limites de downloads?
+select id_plano, nome, valor, limite_downloads from plano;
 
--- 5
-select g.nome as gravadora, count(a.id_artista) as qtd_artistas
+-- 5 Quantos artistas tem cada gravadora?
+-- contamos quantos músicos (produtores) diferentes tem discos em cada gravadora
+-- left join para incluir gravadoras sem discos e o COUNT(DISTINCT) pra evitar infos duplicadas
+select g.nome as gravadora,
+count(distinct d.id_musico) as quantidade_artistas
 from gravadora g
-left join artista a on a.id_gravadora = g.id_gravadora
-group by g.id_gravadora, g.nome
-order by qtd_artistas desc, g.nome;
+left join disco d on d.id_gravadora = g.id_gravadora
+group by g.nome;
 
--- 6
-with contagem as (
-  select g.id_gravadora, g.nome as gravadora, count(a.id_artista) as qtd
-  from gravadora g
-  left join artista a on a.id_gravadora = g.id_gravadora
-  group by g.id_gravadora, g.nome
-)
-select gravadora, qtd
-from contagem
-where qtd = (select max(qtd) from contagem);
-
--- 7
-select m.id_musica, m.titulo, gen.nome as genero, d.titulo as disco
-from musica m
-left join artista art on m.id_artista = art.id_artista
-left join genero gen on m.id_genero = gen.id_genero
-left join disco d on m.id_disco = d.id_disco
-where art.nome = 'Adele'
-order by m.titulo;
-
--- 8
-select m.id_musica, m.titulo, art.nome as artista, gen.nome as genero
-from musica m
-join artista art on m.id_artista = art.id_artista
-join gravadora gr on art.id_gravadora = gr.id_gravadora
-left join genero gen on m.id_genero = gen.id_genero
-where gr.nome = 'Universal Music'
-order by art.nome, m.titulo;
-
--- 9
-select gen.nome as genero, count(m.id_musica) as qtd_musicas
-from genero gen
-left join musica m on m.id_genero = gen.id_genero
-group by gen.id_genero, gen.nome
-order by qtd_musicas desc, gen.nome;
-
--- 10
-select c.id_cliente, c.nome as cliente, count(d.id_download) as total_baixados
-from cliente c
-left join download d on d.id_cliente = c.id_cliente
-group by c.id_cliente, c.nome
-order by total_baixados desc, c.nome;
-
--- 11
-select gen.nome as genero, count(dn.id_download) as total_downloads
-from download dn
-join cliente cl on dn.id_cliente = cl.id_cliente
-join plano p on cl.id_plano = p.id_plano
-join musica m on dn.id_musica = m.id_musica
-join genero gen on m.id_genero = gen.id_genero
-where p.nome = 'Básico'
-group by gen.nome
-order by total_downloads desc
+-- 6  Qual gravadora tem mais artistas?
+-- mesma lógica do exercicio anterior, mas ordenando por quantidade e pegando só a primeira
+select g.nome as gravadora,
+count(distinct d.id_musico) as quantidade_artistas
+from gravadora g
+left join disco d on d.id_gravadora = g.id_gravadora
+group by g.nome
+order by quantidade_artistas desc
 limit 1;
 
--- 12
-select art.nome as artista, gr.nome as gravadora, count(dn.id_download) as total_downloads
-from download dn
-join cliente cl on dn.id_cliente = cl.id_cliente
-join plano p on cl.id_plano = p.id_plano
-join musica m on dn.id_musica = m.id_musica
-join artista art on m.id_artista = art.id_artista
-left join gravadora gr on art.id_gravadora = gr.id_gravadora
-where p.nome = 'Básico'
-group by art.id_artista, art.nome, gr.nome
-order by total_downloads desc, art.nome;
+-- 7 Quais são as músicas da “Adele”? 
+select titulo from musica where numero_bi = '33333333333';
 
--- 13
+-- 8 Quais são as músicas da gravadora Universal Music?
+-- join entre musica e disco, filtrando por id_gravadora
+select m.titulo
+from musica m
+join disco d on d.id_disco = m.id_disco
+where d.id_gravadora = '5'
+order by m.titulo;
+
+-- 9 Quantas músicas cada gênero possui?
+-- número de músicas por gênero, também inclui gêneros sem músicas pelo left join
+select g.nome as genero,
+count(m.id_musica) as qtde_musicas
+from genero g
+left join musica m on m.id_genero = g.id_genero
+group by g.nome;
+
+-- 10 Quantas músicas cada cliente baixou?
+-- Conta quantos downloads cada cliente fez
+select c.nome as cliente,
+count(d.id_download) as quantidade_download
+from cliente c
+left join download d on d.id_cliente = c.id_cliente
+group by c.nome;
+
+-- 11 Qual o gênero mais baixado pelos clientes do Básico?
+
+-- usei essa quantidade de join por conta do encadeamento 
+-- genero > musica > download > cliente > plano
+select g.nome as genero,
+count(*) as total_download
+from genero g 
+join musica m on m.id_genero = g.id_genero 
+join download d on d.id_musica = m.id_musica 
+join cliente c on c.id_cliente = d.id_cliente 
+join plano p on p.id_plano = c.id_plano 
+where p.id_plano = '1'
+group by g.id_genero
+order by total_download desc
+limit 1;
+
+
+-- 12 Quais são os artistas e respectivas gravadoras com mais músicas baixadas no Basico?
+-- junta download > musica > musico > disco > gravadora e conta downloads por (artista, gravadora)
+select m.nome as artista,
+g.nome as gravadora,
+count(d.id_download) as quantidade_download -- número de downloads das músicas desse artista nessa gravadora
+from download d
+join cliente c on c.id_cliente = d.id_cliente
+join plano p on p.id_plano = c.id_plano
+join musica m2 on m2.id_musica = d.id_musica
+join musico m on m.numero_bi = m2.numero_bi
+join disco di on di.id_disco = m2.id_disco
+join gravadora g on g.id_gravadora = di.id_gravadora
+where p.id_plano  = '1'
+group by m.nome, g.nome
+order by quantidade_download desc;
+
+-- 13 Quanto vou receber desses clientes que estão cadastrados em cada plano? Nome plano, quantidade de clientes, valor
+-- retorna para cada plano, quantidade de clientes, valor do plano e receita estimada (clientes * valor)
+-- usei o left join para incluir planos sem clientes e COALESCE evita multiplicar por null
 select p.nome as plano,
-       count(c.id_cliente) as qtd_clientes,
-       p.mensalidade,
-       count(c.id_cliente) * p.mensalidade as receita_mensal
+count(c.id_cliente) as quantidade_clientes,
+p.valor as valor_plano,
+count(c.id_cliente) * coalesce(p.valor, 0) as total_receber -- retorna p.valor se não for vazio, caso contrário retorna 0
 from plano p
-left join cliente c on c.id_plano = p.id_plano
-group by p.id_plano, p.nome, p.mensalidade
-order by p.nome;
+left join cliente c on c.id_plano = p.id_plano 
+group by p.id_plano, p.nome, p.valor
+order by total_receber desc;
 
--- 14
-select coalesce(sum(sub.cnt * sub.mensalidade), 0) as faturamento_mensal
-from (
-  select p.id_plano, p.mensalidade, count(c.id_cliente) as cnt
-  from plano p
-  left join cliente c on c.id_plano = p.id_plano
-  group by p.id_plano, p.mensalidade
-) sub;
+-- 14 Qual o faturamento da minha empresa?
+ -- soma de todos os valores de plano dos clientes  
+select sum(p.valor) as faturamento from cliente c 
+join plano p on p.id_plano = c.id_plano;
 
--- 15
-select gr.nome as gravadora, count(m.id_musica) as qtd_musicas
-from gravadora gr
-left join artista a on a.id_gravadora = gr.id_gravadora
-left join musica m on m.id_artista = a.id_artista
-group by gr.id_gravadora, gr.nome
-order by qtd_musicas desc, gr.nome;
+-- 15 Quantidade de músicas por gravadora
+-- vai retornar para cada gravadora, quantas músicas estão associadas via discos
+-- usei o left join para incluir gravadoras sem música, ele vai contar músicas por gravadora
+select g.nome as gravadora,
+count(m.id_musica) as qtde_musicas from gravadora g
+left join disco d on d.id_gravadora = g.id_gravadora
+left join musica m on m.id_disco= d.id_disco
+group by g.nome;
